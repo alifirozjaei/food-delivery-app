@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext, useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
+import { CreateContainer, Header, MainContainer } from "./components/inedex";
+import { AnimatePresence } from "framer-motion";
+import AuthContext from "./contexts/auth-context";
+import FoodContext from "./contexts/food-context";
+import { getAllFoods } from "./utils/firebaseFunction";
+const App = () => {
+  const authCtx = useContext(AuthContext);
+  const foodCtx = useContext(FoodContext);
 
-function App() {
+  useEffect(() => {
+    
+    
+    try {
+      getAllFoods().then((data) => {
+        foodCtx.setFoods(data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [foodCtx]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AnimatePresence>
+      <div className="w-screen max-w-[100%] min-h-screen h-auto font-sans bg-primary overflow-x-hidden ">
+        <Header />
+        <main className="container mx-auto mt-20  px-2 relative">
+          <Routes>
+            <Route path="/*" element={<MainContainer />} />
+            {authCtx.isLoggedIn && authCtx.isAdmin && (
+              <Route path="/createItems" element={<CreateContainer />} />
+            )}
+          </Routes>
+        </main>
+      </div>
+    </AnimatePresence>
   );
-}
+};
 
 export default App;

@@ -5,6 +5,16 @@
 /.pnp
 .pnp.js
 
+/src/img
+!/src/img/NotFound.svg
+!/src/img/emptyCart.svg
+!/src/img/logo.png
+!/src/img/delivery.png
+!/src/img/chef1.png
+!/src/img/cheff.png
+!/src/img/avatar.png
+!/src/img/heroBg.png
+
 # testing
 /coverage
 
